@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TurboTartine.EditorUtils
 {
@@ -49,6 +50,47 @@ namespace TurboTartine.EditorUtils
             inheritedScene._Bundled = _bundled;
 
             return inheritedScene;
+        }
+
+        public static void PrintBundled(this PackedScene packedScene)
+        {
+            GD.Print(packedScene._Bundled);
+
+            string names = packedScene._Bundled["names"].ToString();
+            GD.Print("Names : " + names);
+
+            string variants = packedScene._Bundled["variants"].ToString();
+            GD.Print("Variants : " + variants);
+
+            int idx = 0;
+            List<int> nodes = packedScene._Bundled["nodes"].AsInt32Array().ToList<int>();
+            while (nodes.Count > 0)
+            {
+                string nodeStr = "Node " + (idx++) + " : ";
+                List<int> node = new List<int>();
+
+                for (int i = 0; i < 5; i++) nodeStr += nodes[i] + "\t";
+                node.AddRange(nodes.GetRange(0, 5));
+                nodes.RemoveRange(0, 5);
+
+                nodeStr += "|" + "\t";
+
+                int propCount = nodes[0];
+                int propRange = 1 + 2 * propCount;
+                for (int i = 0; i < propRange; i++) nodeStr += nodes[i] + "\t";
+                node.AddRange(nodes.GetRange(0, propRange));
+                nodes.RemoveRange(0, propRange);
+
+                nodeStr += "|" + "\t";
+
+                int grpCount = nodes[0];
+                int grpRange = 1 + 2 * grpCount;
+                for (int i = 0; i < grpRange; i++) nodeStr += nodes[i] + "\t";
+                node.AddRange(nodes.GetRange(0, grpRange));
+                nodes.RemoveRange(0, grpRange);
+
+                GD.Print(nodeStr);
+            }
         }
     }
 }
