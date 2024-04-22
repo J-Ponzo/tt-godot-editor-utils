@@ -54,6 +54,7 @@ namespace TurboTartine.EditorUtils
 
         public static void PrintBundled(this PackedScene packedScene)
         {
+            GD.Print("Bundled info of " + packedScene.ResourcePath + " :");
             GD.Print(packedScene._Bundled);
 
             string names = packedScene._Bundled["names"].ToString();
@@ -91,6 +92,8 @@ namespace TurboTartine.EditorUtils
 
                 GD.Print(nodeStr);
             }
+
+            GD.Print("");
         }
     }
 }
