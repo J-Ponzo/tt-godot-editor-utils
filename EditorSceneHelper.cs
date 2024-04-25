@@ -1,4 +1,5 @@
 using Godot;
+using Godot.Collections;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,11 +58,22 @@ namespace TurboTartine.EditorUtils
             GD.Print("Bundled info of " + packedScene.ResourcePath + " :");
             GD.Print(packedScene._Bundled);
 
-            string names = packedScene._Bundled["names"].ToString();
+            string names = "";
+            for (int i = 0; i < packedScene._Bundled["names"].AsStringArray().Length; i++)
+            {
+                names += i + " : " + packedScene._Bundled["names"].AsStringArray()[i] + " | ";
+            }
             GD.Print("Names : " + names);
 
-            string variants = packedScene._Bundled["variants"].ToString();
+            string variants = "";
+            for (int i = 0; i < packedScene._Bundled["variants"].AsGodotArray().Count; i++)
+            {
+                variants += i + " : " + packedScene._Bundled["variants"].AsGodotArray()[i].ToString() + " | ";
+            }
             GD.Print("Variants : " + variants);
+
+            //string variants = packedScene._Bundled["variants"].ToString();
+            //GD.Print("Variants : " + variants);
 
             int idx = 0;
             List<int> nodes = packedScene._Bundled["nodes"].AsInt32Array().ToList<int>();
